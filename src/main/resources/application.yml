@@ -1,0 +1,8 @@
+server:
+  port: 9392
+spring:
+  application:
+    name: main-equipment-controller
+app:
+  websocket:
+    port: 9393  # Отдельный порт для WebSocket/TCP сервера
