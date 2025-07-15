@@ -3,6 +3,26 @@ server:
 spring:
   application:
     name: main-equipment-controller
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:192.168.31.34:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+        spring.json.type.mapping: "equipmentMessage:com.stupor.mainequipmentcontroller.dto.EquipmentMessageDto"
+    consumer:
+      group-id: equipment-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.stupor.mainequipmentcontroller.dto"
+        spring.json.type.mapping: "equipmentMessage:com.stupor.mainequipmentcontroller.dto.EquipmentMessageDto"
 app:
   websocket:
-    port: 9393  # Отдельный порт для WebSocket/TCP сервера
+    port: 9393
+  kafka:
+    topics:
+      equipment-events: equipment-events
+      zone-events: zone-events
